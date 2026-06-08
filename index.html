@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kids Tales App</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="orb orb4"></div>
+</div>
+<div class="stars" id="stars"></div>
+
+<div id="app">
+
+  <!-- HEADER -->
+  <header>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" onclick="toggleSidebar()">☰</button>
+    <a class="logo" href="#">
+      <div class="logo-icon">📚</div>
+      <span>Kids Tales</span>
+    </a>
+    <div class="search-bar">
+      <span>🔍</span>
+      <input type="text" id="searchInput" placeholder="Search stories, topics..." autocomplete="off">
+    </div>
+    <div class="header-right">
+      <button class="btn btn-ghost" onclick="openFavPanel()">❤️ Favorites <span id="favCountBadge" style="display:none;background:var(--primary);color:#fff;border-radius:50px;padding:1px 8px;font-size:0.78rem;margin-left:2px;"></span></button>
+      <button class="btn btn-primary" onclick="shareApp()">📤 Share App</button>
+    </div>
+  </header>
+
+  <div class="main-layout">
+
+    <!-- SIDEBAR -->
+    <aside>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Browse</div>
+        <div class="nav-item active" onclick="showPage('home', this)">
+          <span class="nav-icon">🏠</span><span>Home</span>
+        </div>
+        <div class="nav-item" onclick="showPage('all', this)">
+          <span class="nav-icon">🌟</span><span>All Books</span>
+        </div>
+        <div class="nav-item" onclick="showPage('favorites', this)">
+          <span class="nav-icon">❤️</span><span>Favorites</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Stories</div>
+        <div class="nav-item" onclick="filterCategory('adventure', this)">
+          <span class="nav-icon">🗺️</span><span>Adventure</span>
+          <span class="nav-badge">12</span>
+        </div>
+        <div class="nav-item" onclick="filterCategory('mystery', this)">
+          <span class="nav-icon">🔍</span><span>Mystery</span>
+          <span class="nav-badge">8</span>
+        </div>
+        <div class="nav-item" onclick="filterCategory('sci-fi', this)">
+          <span class="nav-icon">🚀</span><span>Sci-Fi</span>
+          <span class="nav-badge">6</span>
+        </div>
+        <div class="nav-item" onclick="filterCategory('friendship', this)">
+          <span class="nav-icon">🤝</span><span>Friendship</span>
+          <span class="nav-badge">10</span>
+        </div>
+        <div class="nav-item" onclick="filterCategory('cooking', this)">
+          <span class="nav-icon">🍳</span><span>Cooking</span>
+          <span class="nav-badge">5</span>
+        </div>
+        <div class="nav-item" onclick="filterCategory('reflection', this)">
+          <span class="nav-icon">🌈</span><span>Reflections</span>
+          <span class="nav-badge">7</span>
+        </div>
+        <div class="nav-item" onclick="filterCategory('classics', this)">
+          <span class="nav-icon">🏛️</span><span>Classics</span>
+          <span class="nav-badge">12</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Educational</div>
+        <div class="nav-item" onclick="filterCategory('math', this)">
+          <span class="nav-icon">🔢</span><span>Math Books</span>
+        </div>
+        <div class="nav-item" onclick="filterCategory('science', this)">
+          <span class="nav-icon">🔬</span><span>Science</span>
+        </div>
+        <div class="nav-item" onclick="filterCategory('language', this)">
+          <span class="nav-icon">🌍</span><span>Languages</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main>
+
+      <!-- HOME PAGE -->
+      <div class="page active" id="page-home">
+
+        <div class="hero">
+          <div class="hero-text">
+            <h1>Welcome to your<br><span>Magic Library! ✨</span></h1>
+            <p>Discover hundreds of amazing stories, adventures, and learning books — all in one magical place just for you!</p>
+            <div style="display:flex;gap:12px;">
+              <button class="btn btn-primary" onclick="showPage('all', document.querySelector('.nav-item:nth-child(2)'))">📖 Explore Books</button>
+              <button class="btn btn-ghost" onclick="scrollToEdu()">🎓 Learn Something</button>
+            </div>
+          </div>
+          <div class="hero-illustration">🏰</div>
+        </div>
+
+        <!-- Featured -->
+        <div class="section-title">
+          <h2>⭐ Featured Stories <span class="badge">Editor's Picks</span></h2>
+        </div>
+        <div class="featured-grid" id="featuredGrid"></div>
+
+        <!-- New Arrivals -->
+        <div class="section-title">
+          <h2>🆕 New Arrivals</h2>
+          <a class="see-all" onclick="showPage('all',null)">See all →</a>
+        </div>
+        <div class="books-grid" id="newGrid"></div>
+
+        <!-- Educational Section -->
+        <div class="section-title" id="edu-section">
+          <h2>🎓 Educational Books</h2>
+        </div>
+        <div class="edu-grid">
+          <div class="edu-card edu-math" onclick="filterCategory('math',null)">
+            <span class="edu-icon">🔢</span>
+            <div class="count">8 books</div>
+            <h3>Mathematics</h3>
+            <p>Numbers, shapes, puzzles & fun math adventures for curious minds!</p>
+          </div>
+          <div class="edu-card edu-science" onclick="filterCategory('science',null)">
+            <span class="edu-icon">🔬</span>
+            <div class="count">10 books</div>
+            <h3>Science</h3>
+            <p>Explore the universe, animals, nature and incredible experiments!</p>
+          </div>
+          <div class="edu-card edu-language" onclick="filterCategory('language',null)">
+            <span class="edu-icon">🌍</span>
+            <div class="count">6 books</div>
+            <h3>Languages</h3>
+            <p>Learn Spanish, French, Japanese & more through fun illustrated stories!</p>
+          </div>
+        </div>
+
+        <!-- CLASSICS SECTION -->
+        <div class="section-title" style="margin-top:8px;">
+          <h2>🏛️ Classic Tales <span class="badge">Timeless Stories</span></h2>
+          <a class="see-all" onclick="filterCategory('classics',null)">See all →</a>
+        </div>
+        <div class="books-grid" id="classicsGrid"></div>
+
+      </div>
+
+      <!-- ALL BOOKS PAGE -->
+      <div class="page" id="page-all">
+        <div class="section-title">
+          <h2 id="allTitle">📚 All Books</h2>
+        </div>
+        <div class="category-chips" id="categoryChips"></div>
+        <div class="books-grid" id="allGrid"></div>
+        <div class="no-results" id="noResults" style="display:none">
+          <div class="icon">🔍</div>
+          <p>No books found. Try a different search!</p>
+        </div>
+      </div>
+
+      <!-- FAVORITES PAGE -->
+      <div class="page" id="page-favorites">
+        <div class="section-title">
+          <h2>❤️ My Favorite Books</h2>
+          <button class="btn btn-ghost" onclick="shareFavorites()" style="font-size:0.85rem;padding:8px 16px;">📤 Share List</button>
+        </div>
+        <div class="books-grid" id="favGrid"></div>
+        <div class="no-results" id="noFavResults" style="display:none">
+          <div class="icon">💝</div>
+          <p>No favorites yet! Tap ❤️ on a book to save it here.</p>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- BOOK READER MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-cover" id="modalCover"></div>
+      <div>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-subtitle" id="modalSubtitle"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal(null)">✕</button>
+    </div>
+    <div class="modal-tabs">
+      <div class="modal-tab active" onclick="switchTab('read', this)">📖 Read</div>
+      <div class="modal-tab" onclick="switchTab('listen', this)">🎧 Listen</div>
+      <div class="modal-tab" onclick="switchTab('info', this)">ℹ️ About</div>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- FAVORITES SIDE PANEL -->
+<div class="fav-panel" id="favPanel">
+  <div class="fav-header">
+    <h2>❤️ My Favorites <span id="favPanelCount" style="font-size:0.85rem;font-weight:600;color:rgba(255,255,255,0.4);margin-left:4px;"></span></h2>
+    <p style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin-top:6px;">Your saved books in one place</p>
+    <button onclick="closeFavPanel()" style="position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.08);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;">✕</button>
+  </div>
+  <div class="fav-list" id="favPanelList"></div>
+  <div class="fav-footer">
+    <button class="share-btn" onclick="shareFavorites()">📤 Share My Library</button>
+  </div>
+</div>
+
+<!-- FAVORITES BUTTON -->
+<button class="fav-toggle" onclick="openFavPanel()" title="My Favorites">
+  ❤️
+  <span class="badge-count" id="favBadge" style="display:none">0</span>
+</button>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">✅</span>
+  <span id="toastMsg">Done!</span>
+</div>
+
+<!-- SHARE MODAL -->
+<div class="modal-overlay" id="shareOverlay" onclick="closeShare(event)">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header">
+      <div class="modal-cover" id="shareModalIcon">📤</div>
+      <div>
+        <div class="modal-title" id="shareModalTitle">Share</div>
+        <div class="modal-subtitle" id="shareModalSubtitle">Spread the magic of reading!</div>
+      </div>
+      <button class="modal-close" onclick="closeShare(null)">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="share-modal-content">
+        <p id="shareModalText">Share this amazing app with friends and family!</p>
+        <div class="share-options">
+          <div class="share-option" onclick="doShare('whatsapp')"><span class="share-icon">💬</span>WhatsApp</div>
+          <div class="share-option" onclick="doShare('email')"><span class="share-icon">📧</span>Email</div>
+          <div class="share-option" onclick="doShare('copy')"><span class="share-icon">📋</span>Copy Link</div>
+          <div class="share-option" onclick="doShare('print')"><span class="share-icon">🖨️</span>Print</div>
+        </div>
+        <div id="shareExtraInfo" style="display:none;background:rgba(255,255,255,0.05);border-radius:14px;padding:16px;margin-top:16px;">
+          <div style="font-size:0.9rem;color:rgba(255,255,255,0.7);margin-bottom:12px;" id="shareExtraText"></div>
+          <div class="share-link">
+            <span id="shareUrl">kidstales.app</span>
+            <button class="copy-link-btn" onclick="copyLink()">Copy Link</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js_code.js"></script>
+</body>
+</html>
